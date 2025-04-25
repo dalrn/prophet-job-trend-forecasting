@@ -8,6 +8,7 @@ REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model
 
 ```
 job_trend_forecasting_model/
+|
 ├── example_data/                      # Contoh input data berupa tanggal
 │   └── sample_input.csv               # Hanya berisi kolom 'ds' berformat tanggal
 |
