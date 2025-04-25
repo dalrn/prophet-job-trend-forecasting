@@ -1,6 +1,6 @@
 # 📈 Job Trend Forecasting Model API
 
-REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model [Prophet](https://facebook.github.io/prophet/). API ini memungkinkan pengguna mengirim daftar tanggal dan nama kategori pekerjaan, lalu mengembalikan prediksi tren jumlah postingan kerja (`yhat`) untuk tanggal-tanggal tersebut.
+REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model [Prophet](https://facebook.github.io/prophet/). API ini menerima input berupa daftar tanggal dan nama kategori pekerjaan dari pengguna, lalu memberikan prediksi tren jumlah postingan kerja pada situs [Jobstreet Indonesia](https://id.jobstreet.com) (`yhat`) untuk tanggal-tanggal tersebut.
 
 ---
 
@@ -10,17 +10,17 @@ REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model
 job_trend_forecasting_model/
 |
 ├── example_data/                      # Contoh input data berupa tanggal
-│   └── sample_input.csv               # Hanya berisi kolom 'ds' berformat tanggal
+│   └── sample_input.csv               # Hanya berisi kolom 'ds' berformat datetime
 |
 ├── models/                            # Berisi model Prophet per kategori (format JSON)
 │   ├── prophet_model_Administrasi_Umum.json
-│   ├── prophet_model_Akuntansi-Perbankan-Finansial.json
-│   └── ... (dan lainnya, satu file per kategori)
+│   ├── prophet_model_Akuntansi_Umum.json
+│   └── ... (dll., satu file per kategori)
 |
-├── forecast_api.py                    # Endpoint FastAPI untuk prediksi
-├── predict_all.py                     # (Opsional) Jalankan prediksi untuk semua kategori dengan input 'sample_input.csv'
+├── forecast_api.py                    # Endpoint FastAPI untuk model
+├── predict_all.py                     # Jalankan prediksi untuk semua kategori dengan input 'sample_input.csv'
 ├── README.md                          # Dokumentasi proyek
-└── requirements.txt                   # Dependencies: prophet, fastapi, pandas, dll
+└── requirements.txt                   # Dependencies: prophet, fastapi, pandas, dll.
 
 ```
 
@@ -28,21 +28,21 @@ job_trend_forecasting_model/
 
 ## ⚙️ Cara Kerja API
 
-### 🔹 Mekanisme Input
+### Input
 
 API menerima request `POST` ke endpoint `/predict` dengan format JSON berikut:
 
 ```json
 {
-  "category": "Marketing",
+  "category": "Digital_Marketing",
   "dates": ["2025-05-01", "2025-06-01", "2025-07-01"]
 }
 ```
 
-- `category` : Nama kategori pekerjaan (20 kategori, sesuaikan dengan masing-masing nama model).
-- `dates` : Daftar tanggal (string dalam format YYYY-MM-DD) untuk diprediksi.
+- `category` : Nama kategori pekerjaan (20 kategori, sesuaikan dengan nama masing-masing model).
+- `dates` : Daftar tanggal (string dalam format YYYY-MM-DD) yang ingin diprediksi.
 
-### ✅ Output yang Dihasilkan
+### Output
 
 Output berupa prediksi tren (`yhat`) untuk setiap tanggal yang diminta:
 
@@ -84,7 +84,7 @@ API akan tersedia di `http://127.0.0.1:8000`.
 ```bash
 curl -X POST http://127.0.0.1:8000/predict \
 -H "Content-Type: application/json" \
--d '{"category": "Sales", "dates": ["2025-05-01", "2025-06-01"]}'
+-d '{"category": "Manufaktur", "dates": ["2025-05-01", "2025-06-01"]}'
 ```
 
 ### B. Menggunakan Python Script
@@ -95,7 +95,7 @@ import requests
 response = requests.post(
     "http://127.0.0.1:8000/predict",
     json={
-        "category": "Marketing",
+        "category": "Manufaktur",
         "dates": ["2025-05-01", "2025-06-01"]
     }
 )
@@ -120,7 +120,7 @@ Script Python dapat membaca file ini dan menggunakannya untuk mengirim permintaa
 
 ---
 
-## 📄 Tentang `predict_all.py` (Opsional)
+## 📄 Tentang `predict_all.py`
 
 Script opsional untuk:
 
@@ -129,28 +129,3 @@ Script opsional untuk:
 - Menyimpan atau menampilkan hasilnya per kategori
 
 ---
-
-## 🧠 Catatan Teknis
-
-- Nama file model disesuaikan dari kategori menggunakan fungsi `sanitize_filename()` agar tidak error karena spasi atau karakter khusus.
-- Model disimpan dalam format JSON (`model_to_json` dan `model_from_json` dari Prophet).
-- Semua input `dates` akan dikonversi menjadi format `datetime` oleh `pandas.to_datetime`.
-
----
-
-## ❓ FAQ
-
-### ❓ Apa yang terjadi jika kategori tidak ditemukan?
-
-API akan memberikan error 500 dengan pesan bahwa file model tidak ditemukan.
-
----
-
-### ❓ Apakah saya bisa menambahkan kategori baru?
-
-Ya. Simpan model baru ke dalam folder `models/` dengan nama:
-
-```plaintext
-prophet_model_{category_name}.json
-```
-
