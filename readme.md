@@ -1,6 +1,6 @@
 # 📈 Job Trend Forecasting Model API
 
-Repositori ini menyediakan REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model [Prophet](https://facebook.github.io/prophet/). API ini memungkinkan pengguna mengirim daftar tanggal dan nama kategori pekerjaan, lalu mengembalikan prediksi tren jumlah postingan kerja (`yhat`) untuk tanggal-tanggal tersebut.
+REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model [Prophet](https://facebook.github.io/prophet/). API ini memungkinkan pengguna mengirim daftar tanggal dan nama kategori pekerjaan, lalu mengembalikan prediksi tren jumlah postingan kerja (`yhat`) untuk tanggal-tanggal tersebut.
 
 ---
 
@@ -8,18 +8,19 @@ Repositori ini menyediakan REST API untuk melakukan *forecasting tren kategori p
 
 ```
 job_trend_forecasting_model/
+├── example_data/                      # Contoh input data berupa tanggal
+│   └── sample_input.csv               # Hanya berisi kolom 'ds' berformat tanggal
+|
 ├── models/                            # Berisi model Prophet per kategori (format JSON)
 │   ├── prophet_model_Administrasi_Umum.json
 │   ├── prophet_model_Akuntansi-Perbankan-Finansial.json
 │   └── ... (dan lainnya, satu file per kategori)
-│
-├── example_data/                      # Contoh input data berupa tanggal
-│   └── sample_input.csv               # Hanya berisi kolom 'ds' berformat tanggal
 |
-├── predict_all.py                     # (Opsional) Jalankan prediksi untuk semua kategori dengan input 'sample_input.csv'
 ├── forecast_api.py                    # Endpoint FastAPI untuk prediksi
-├── requirements.txt                   # Dependencies: prophet, fastapi, pandas, dll
-└── README.md                          # Dokumentasi proyek
+├── predict_all.py                     # (Opsional) Jalankan prediksi untuk semua kategori dengan input 'sample_input.csv'
+├── README.md                          # Dokumentasi proyek
+└── requirements.txt                   # Dependencies: prophet, fastapi, pandas, dll
+
 ```
 
 ---
