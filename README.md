@@ -1,36 +1,36 @@
 # 📈 Job Trend Forecasting Model API
 
-REST API untuk melakukan *forecasting tren kategori pekerjaan* menggunakan model [Prophet](https://facebook.github.io/prophet/). API ini menerima input berupa daftar tanggal dan nama kategori pekerjaan dari pengguna, lalu memberikan prediksi tren jumlah postingan kerja pada situs [Jobstreet Indonesia](https://id.jobstreet.com) (`yhat`) untuk tanggal-tanggal tersebut.
+A REST API for forecasting job category trends using the [Prophet](https://facebook.github.io/prophet/) model. The API accepts user input in the form of a list of dates and job category names, and returns predicted trends of job posting counts on [Jobstreet Indonesia](https://id.jobstreet.com) (`yhat`) for the specified dates.
 
 ---
 
-## 📁 Struktur Folder
+## 📁 Folder Structure
 
 ```
 job_trend_forecasting_model/
 |
-├── example_data/                      # Contoh input data berupa tanggal
-│   └── sample_input.csv               # Hanya berisi kolom 'ds' berformat datetime
+├── example_data/                      # Example input data containing dates
+│   └── sample_input.csv               # Contains only a 'ds' column in datetime format
 |
-├── models/                            # Berisi model Prophet per kategori (format JSON)
+├── models/                            # Prophet models per job category (JSON format)
 │   ├── prophet_model_Administrasi_Umum.json
 │   ├── prophet_model_Akuntansi_Umum.json
-│   └── ... (dll., satu file per kategori)
+│   └── ... (etc., one model file per category)
 |
-├── forecast_api.py                    # Endpoint FastAPI untuk model
-├── predict_all.py                     # Jalankan prediksi untuk semua kategori dengan input 'sample_input.csv'
-├── README.md                          # Dokumentasi proyek
-└── requirements.txt                   # Dependencies: prophet, fastapi, pandas, dll.
-
+├── forecast_api.py                    # FastAPI endpoint for serving forecasts
+├── predict_all.py                     # Script to generate forecasts for all categories using 'sample_input.csv' as input
+│                                     
+├── README.md                          # Project documentation
+└── requirements.txt                   # Project dependencies (prophet, fastapi, pandas, etc.)
 ```
 
 ---
 
-## ⚙️ Cara Kerja API
+## ⚙️ How the API Works
 
 ### Input
 
-API menerima request `POST` ke endpoint `/predict` dengan format JSON berikut:
+The API accepts a `POST` request to the `/predict` endpoint with the following JSON format:
 
 ```json
 {
@@ -39,12 +39,12 @@ API menerima request `POST` ke endpoint `/predict` dengan format JSON berikut:
 }
 ```
 
-- `category` : Nama kategori pekerjaan (20 kategori, sesuaikan dengan nama masing-masing model).
-- `dates` : Daftar tanggal (string dalam format YYYY-MM-DD) yang ingin diprediksi.
+- `category` : Name of the job category (20 available categories; must match the corresponding model name).
+- `dates` : List of dates (strings in YYYY-MM-DD format) for which predictions are requested.
 
 ### Output
 
-Output berupa prediksi tren (`yhat`) untuk setiap tanggal yang diminta:
+The API returns trend forecasts (`yhat`) for each requested date:
 
 ```json
 {
@@ -56,9 +56,11 @@ Output berupa prediksi tren (`yhat`) untuk setiap tanggal yang diminta:
 }
 ```
 
+- `ds` : Date of the prediction
+- `yhat` : Predicted trend value of job postings for the specified category
 ---
 
-## 🚀 Cara Menjalankan API
+## 🚀 How to run the API
 
 ### 1. Install Dependencies
 
@@ -67,19 +69,19 @@ Output berupa prediksi tren (`yhat`) untuk setiap tanggal yang diminta:
 pip install -r requirements.txt
 ```
 
-### 2. Jalankan API
+### 2. Run the API
 
 ```bash
 uvicorn forecast_api:app --reload
 ```
 
-API akan tersedia di `http://127.0.0.1:8000`.
+API will be available on `http://127.0.0.1:8000`.
 
 ---
 
-## 💡 Contoh Penggunaan
+## 💡 Usage Example
 
-### A. Menggunakan `curl`
+### A. Using `curl`
 
 ```bash
 curl -X POST http://127.0.0.1:8000/predict \
@@ -87,7 +89,7 @@ curl -X POST http://127.0.0.1:8000/predict \
 -d '{"category": "Manufaktur", "dates": ["2025-05-01", "2025-06-01"]}'
 ```
 
-### B. Menggunakan Python Script
+### B. Using Python Script
 
 ```python
 import requests
@@ -105,9 +107,9 @@ print(response.json())
 
 ---
 
-## 📂 Folder `example_data/`
+## 📂 About `example_data/` Folder
 
-File `sample_input.csv` berisi contoh tanggal (kolom `ds`) yang bisa digunakan sebagai input ke API. Format:
+`sample_input.csv` contains sample dates (kolom `ds`) that can be used as an input for the API. Format:
 
 ```csv
 ds
@@ -116,16 +118,16 @@ ds
 2025-07-01
 ```
 
-Script Python dapat membaca file ini dan menggunakannya untuk mengirim permintaan ke API.
+The Python script can read this file and use it to send requests to the API.
 
 ---
 
-## 📄 Tentang `predict_all.py`
+## 📄 About `predict_all.py`
 
-Script opsional untuk:
+Optional script to:
 
-- Membaca `sample_input.csv`
-- Melakukan prediksi untuk **semua model** dalam folder `models/`
-- Menyimpan atau menampilkan hasilnya per kategori
+- Read `sample_input.csv`
+- Generate predictions for **all available models** in the `models/` folder
+- Save or display the prediction results for each job category
 
 ---
