@@ -1,10 +1,10 @@
-# 📈 Job Trend Forecasting Model API
+# Job Trend Forecasting Model API
 
 A REST API for forecasting job category trends using the [Prophet](https://facebook.github.io/prophet/) model. The API accepts user input in the form of a list of dates and job category names, and returns predicted trends of job posting counts on [Jobstreet Indonesia](https://id.jobstreet.com) (`yhat`) for the specified dates.
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```
 job_trend_forecasting_model/
@@ -26,7 +26,7 @@ job_trend_forecasting_model/
 
 ---
 
-## ⚙️ How the API Works
+## How the API Works
 
 ### Input
 
@@ -60,7 +60,7 @@ The API returns trend forecasts (`yhat`) for each requested date:
 - `yhat` : Predicted trend value of job postings for the specified category
 ---
 
-## 🚀 How to run the API
+## How to run the API
 
 ### 1. Install Dependencies
 
@@ -79,7 +79,7 @@ API will be available on `http://127.0.0.1:8000`.
 
 ---
 
-## 💡 Usage Example
+## Usage Example
 
 ### A. Using `curl`
 
@@ -107,7 +107,7 @@ print(response.json())
 
 ---
 
-## 📂 About `example_data/` Folder
+## About `example_data/` Folder
 
 `sample_input.csv` contains sample dates (kolom `ds`) that can be used as an input for the API. Format:
 
@@ -122,7 +122,7 @@ The Python script can read this file and use it to send requests to the API.
 
 ---
 
-## 📄 About `predict_all.py`
+## About `predict_all.py`
 
 Optional script to:
 
